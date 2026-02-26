@@ -14,25 +14,27 @@
         overflow: hidden;
         text-align: center;
         color: #5a3e6b;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
     }
 
     .message {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 85%;
         background: rgba(255,255,255,0.7);
         padding: 25px;
         border-radius: 20px;
         box-shadow: 0 0 20px rgba(0,0,0,0.1);
         font-size: 20px;
         animation: fadeIn 2.5s ease-in-out;
+        z-index: 1;
+        max-width: 90%;
     }
 
     @keyframes fadeIn {
-        from { opacity: 0; transform: translate(-50%, -60%); }
-        to { opacity: 1; transform: translate(-50%, -50%); }
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     .emoji {
@@ -47,10 +49,7 @@
     }
 
     #playBtn {
-        position: absolute;
-        top: 75%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        margin-top: 30px;
         padding: 15px 25px;
         font-size: 18px;
         background: #d8b4f8;
@@ -60,11 +59,12 @@
         cursor: pointer;
         box-shadow: 0 0 20px rgba(0,0,0,0.2);
         transition: 0.3s;
+        z-index: 2;
     }
 
     #playBtn:hover {
         background: #c084fc;
-        transform: translate(-50%, -50%) scale(1.08);
+        transform: scale(1.08);
     }
 </style>
 </head>
@@ -91,45 +91,47 @@ here are some chocolates and flowers for you 🤍🍫🤍🍫🤍🍫🤍🍫�
 <button id="playBtn">Click to open your surprise 💜</button>
 
 <audio id="bgMusic" preload="auto">
-    <source src="pehli-nazar-mein.mp3" type="audio/mpeg">
+    <!-- Replace <username>/<repo> with your GitHub info -->
+    <source src="https://raw.githubusercontent.com/<username>/<repo>/main/pehli-nazar-mein.mp3" type="audio/mpeg">
     Your browser does not support audio.
 </audio>
 
 <script>
-    const emojis = ["🤍","🌸","🍫","🤍","🌸","🍫"];
+const emojis = ["🤍","🌸","🍫","🤍","🌸","🍫"];
 
-    function createEmoji() {
-        const emoji = document.createElement("div");
-        emoji.classList.add("emoji");
-        emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-        emoji.style.left = Math.random() * 100 + "vw";
-        emoji.style.animationDuration = (3 + Math.random() * 4) + "s";
-        document.body.appendChild(emoji);
+function createEmoji() {
+    const emoji = document.createElement("div");
+    emoji.classList.add("emoji");
+    emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+    emoji.style.left = Math.random() * 100 + "vw";
+    emoji.style.animationDuration = (3 + Math.random() * 4) + "s";
+    document.body.appendChild(emoji);
 
-        setTimeout(() => {
-            emoji.remove();
-        }, 7000);
-    }
+    setTimeout(() => {
+        emoji.remove();
+    }, 7000);
+}
 
-    setInterval(createEmoji, 250);
+setInterval(createEmoji, 250);
 
-    const btn = document.getElementById("playBtn");
-    const music = document.getElementById("bgMusic");
+const btn = document.getElementById("playBtn");
+const music = document.getElementById("bgMusic");
 
-    btn.addEventListener("click", function () {
+btn.addEventListener("click", function () {
+    // Force load and set volume
+    music.load();
+    music.muted = false;
+    music.volume = 1.0;
 
-        music.play().then(() => {
-            btn.innerHTML = "Playing your surprise 💕";
-            btn.disabled = true;
-            btn.style.background = "#a855f7";
-        }).catch((error) => {
-            alert("Tap again to start the music 💜");
-            console.log(error);
-        });
-
+    music.play().then(() => {
+        btn.innerHTML = "Playing your surprise 💜";
+        btn.disabled = true;
+    }).catch(err => {
+        alert("Could not start music — try tapping again 💕");
+        console.error(err);
     });
+});
 </script>
 
 </body>
 </html>
-
