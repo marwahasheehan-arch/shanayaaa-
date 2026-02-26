@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For Shanayaaa💜</title>
+<title>For Shanayaaa 💜</title>
 
 <style>
     body {
@@ -90,12 +90,13 @@ here are some chocolates and flowers for you 🤍🍫🤍🍫🤍🍫🤍🍫�
 
 <button id="playBtn">Click to open your surprise 💜</button>
 
-<audio id="bgMusic" loop>
+<audio id="bgMusic" preload="auto">
     <source src="pehli-nazar-mein.mp3" type="audio/mpeg">
+    Your browser does not support audio.
 </audio>
 
 <script>
-    const emojis = ["🤍","🌸","🍫","🤍","🌸","🍫","🤍","🌸","🍫"];
+    const emojis = ["🤍","🌸","🍫","🤍","🌸","🍫"];
 
     function createEmoji() {
         const emoji = document.createElement("div");
@@ -115,11 +116,20 @@ here are some chocolates and flowers for you 🤍🍫🤍🍫🤍🍫🤍🍫�
     const btn = document.getElementById("playBtn");
     const music = document.getElementById("bgMusic");
 
-    btn.addEventListener("click", () => {
-        music.play();
-        btn.style.display = "none";
+    btn.addEventListener("click", function () {
+
+        music.play().then(() => {
+            btn.innerHTML = "Playing your surprise 💕";
+            btn.disabled = true;
+            btn.style.background = "#a855f7";
+        }).catch((error) => {
+            alert("Tap again to start the music 💜");
+            console.log(error);
+        });
+
     });
 </script>
 
 </body>
 </html>
+
